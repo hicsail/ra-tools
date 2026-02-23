@@ -8,8 +8,8 @@
     "/dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest"
   },
   "exports": {
     ".": {
@@ -23,5 +23,10 @@
   "type": "module",
   "devDependencies": {
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "vitest": "^4.0.18"
   }
 }
