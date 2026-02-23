@@ -1,5 +1,5 @@
 import { TransformationType, TransformFnParams } from 'class-transformer';
-import { parseEmbed, parseFilter, parseRange, parseSort } from './parse.js';
+import { parseEmbed, parseFilter, parseRange, parseSort } from '../src/parse.js';
 import { expect, test } from 'vitest';
 
 const makeTransformInput = (value: unknown): TransformFnParams => ({
