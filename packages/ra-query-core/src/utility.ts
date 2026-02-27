@@ -1,4 +1,14 @@
 /**
+ * Type based on class-transformer with only the fields needed
+ * for parsing
+ */
+export interface TransformFnParams {
+    value: any;
+    key: string;
+    obj: any;
+}
+
+/**
  * Handles parsing a potential object.
  *
  * 1. If the value is already an object it is just returned

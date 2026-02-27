@@ -1,5 +1,5 @@
-import { TransformFnParams } from 'class-transformer';
 import { unpack, eachElementIsType } from './utility';
+import { TransformFnParams } from './utility';
 
 export type FilterOperations = 'eq' | 'neq' | 'eq_any' | 'neq_any' | 'inc_any' | 'q' | 'lt' | 'lte' | 'gt' | 'gte';
 
