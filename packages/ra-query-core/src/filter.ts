@@ -10,7 +10,7 @@ const supportedOperations = [
 export type FilterOperations = typeof supportedOperations[number];
 
 /** Helper for more cleaner selection of operations */
-const FilterOperations = {
+export const FilterOperations = {
   get Equal(): FilterOperations { return 'eq' },
   get NotEqual(): FilterOperations { return 'neq' },
   get EqualAny(): FilterOperations { return 'neq_any' },
@@ -37,8 +37,9 @@ export type FilterItem = {
 
 /**
  * Helper to parse the filer name itself. FakeRest's spec
- * allows for including the operation in the sanme. For example
+ * allows for including the operation in the name as a postfix.
  *
+ * For example
  * "author.lastname_neq" => { field: "author.lastname", operation: FilterOperations.NotEqual }
  */
 export const parseFilterName = (fieldRaw: string): { field: string, operation: FilterOperations } => {
@@ -50,7 +51,7 @@ export const parseFilterName = (fieldRaw: string): { field: string, operation: F
   }
 
   const lastIndex = components[components.length - 1];
-  const operation = supportedOperations.find(lastIndex as any);
+  const operation = supportedOperations.find(operation => operation === lastIndex);
 
   // No matching operation, default to equals
   if (operation === undefined) {
