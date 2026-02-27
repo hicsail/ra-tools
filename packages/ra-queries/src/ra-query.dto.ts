@@ -1,8 +1,10 @@
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { parseRange, parseSort, parseFilter } from './parse.js';
-import { FilterItem, Range, Sort } from './types.js';
 import { PaginationResponse } from './pagination.dto.js';
+import { FilterItem } from './filter';
+import { Sort } from './sort';
+import { Range } from './range';
 
 export class RAQuery {
   @IsOptional()
