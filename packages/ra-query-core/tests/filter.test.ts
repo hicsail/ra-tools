@@ -104,4 +104,8 @@ describe('parseFilter', () => {
       { field: 'author.name', value: 'Harper Lee Collins', operation: FilterOperations.NotEqual }
     ]);
   });
+
+  it('should disallow invalid JSON objects', () => {
+    expect(() => parseFilter(makeParams('authorname=bob'))).toThrow();
+  });
 });
