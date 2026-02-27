@@ -3,7 +3,7 @@ import { TransformFnParams } from './utility';
 
 /** Supported operations from FakeRest Standard */
 const supportedOperations = [
-  'eq', 'neq', 'eq_any', 'neq_any', 'inc_any', 'q', 'lt', 'lte', 'gt', 'gte'
+  'neq_any', 'eq_any', 'inc_any', 'neq', 'lte', 'gte', 'lt', 'gt', 'eq', 'q'
 ] as const;
 
 /** Typescript definition for the supported operations */
@@ -23,6 +23,8 @@ export const FilterOperations = {
   get GreaterThanEqual(): FilterOperations { return 'gte' }
 }
 
+export type FilterValueType = string | number | string[] | number[];
+
 /**
  * Filtering is passed in as the fields and the operations that should
  * take place. For example
@@ -31,7 +33,7 @@ export const FilterOperations = {
  */
 export type FilterItem = {
   field: string;
-  value: string | number | string[] | number[];
+  value: FilterValueType;
   operation: FilterOperations;
 };
 
@@ -43,37 +45,23 @@ export type FilterItem = {
  * "author.lastname_neq" => { field: "author.lastname", operation: FilterOperations.NotEqual }
  */
 export const parseFilterName = (fieldRaw: string): { field: string, operation: FilterOperations } => {
-  const components = fieldRaw.split('_');
+  // See if any of the operators show up at the end, the operators are ordered to
+  // avoid partial matches
+  for (const operation of supportedOperations) {
+    if (fieldRaw.endsWith(operation)) {
+      // Matching operation found, pull off the postfix
+      const lengthOfPostfix = operation.length + 1  // +1 for the underscore
+      const fieldName = fieldRaw.slice(0, -lengthOfPostfix);
 
-  // If there is only one element, then the operation postfix isn't present
-  if (components.length === 1) {
-    return { field: fieldRaw, operation: FilterOperations.Equal };
+      return { field: fieldName, operation };
+    }
   }
 
-  const lastIndex = components[components.length - 1];
-  const operation = supportedOperations.find(operation => operation === lastIndex);
-
-  // No matching operation, default to equals
-  if (operation === undefined) {
-    return { field: fieldRaw, operation: FilterOperations.Equal };
-  }
-
-  // Matching operation found, pull off the postfix
-  const lengthOfPostfix = operation.length + 1  // +1 for the underscore
-  const fieldName = fieldRaw.slice(0, -lengthOfPostfix);
-
-  return { field: fieldName, operation };
+  // No matching operation found, return the field and the default equals
+  return { field: fieldRaw, operation: FilterOperations.Equal };
 }
 
-/**
- * Handle parsing a single filter item. This involves getting
- * the following information.
- *
- * Field Name: What field (including dot operator) to search over
- * Operator: Equal, not equal, etc
- * Value: What to search for over the target field
- */
-export const parseFilterItem = (field: string, value: unknown): FilterItem => {
+export const parseFilterValue = (value: unknown): FilterValueType => {
   // Value itself cannot be an object
   if (typeof value === 'object' && !Array.isArray(value)) {
     throw new Error('value of a filter must be an array or primitive');
@@ -94,11 +82,7 @@ export const parseFilterItem = (field: string, value: unknown): FilterItem => {
     throw new Error("A value that isn't an array needs to be a string or number");
   }
 
-  return {
-    field,
-    value: value as any,
-    operation: FilterOperations.Equal
-  }
+  return value as any;
 };
 
 export const parseFilter = (params: TransformFnParams): FilterItem[] => {
@@ -122,37 +106,17 @@ export const parseFilter = (params: TransformFnParams): FilterItem[] => {
 
   // Need to validate each sub field
   const result: FilterItem[] = [];
-  for (const field in unpacked as any) {
+  for (const fieldRaw in unpacked as any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const payload = (unpacked as any)[field] as unknown;
+    const valueRaw = (unpacked as any)[fieldRaw] as unknown;
 
-    // Payload cannot be an object
-    if (typeof payload === 'object' && !Array.isArray(payload)) {
-      throw new Error('Field of a filter must be an array or primitive');
-    }
-
-    // Can not have an undefined value
-    if (payload === undefined) {
-      throw new Error('Value of the field cannot be undefined');
-    }
-
-    // If the type is an array, make sure each element is valid
-    const payloadType = typeof payload;
-    if (Array.isArray(payload)) {
-      if (!eachElementIsType(payload, 'string') && !eachElementIsType(payload, 'number')) {
-        throw new Error('Each elemenet of a filter payload must be a string or number');
-      }
-    } else if (payloadType != 'number' && payloadType != 'string') {
-      throw new Error("A field that isn't an array needs to be a string or number");
-    }
-
-    // TODO: In the future handle the sub-operation support
+    const { field, operation } = parseFilterName(fieldRaw);
+    const value = parseFilterValue(valueRaw);
 
     result.push({
       field,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      value: payload as any,
-      operation: FilterOperations.Equal
+      operation,
+      value
     });
   }
 
