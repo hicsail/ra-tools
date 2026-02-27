@@ -1,21 +1,14 @@
-export interface Pagination {
-  page: number;
-  perPage: number;
+/** The parsed `range` query parameter, preserving FakeRest's [start, end] format. */
+export interface Range {
+  start: number;
+  end: number;
 }
 
 /**
- * Parses the `range` query parameter from ra-data-simple-rest into a page/perPage object.
- * Expected format: JSON-encoded `[rangeStart, rangeEnd]` array, e.g. `[0,24]`
- *
- * ra-data-simple-rest computes range as:
- *   rangeStart = (page - 1) * perPage
- *   rangeEnd   = page * perPage - 1
- *
- * So the inverse is:
- *   perPage = rangeEnd - rangeStart + 1
- *   page    = floor(rangeStart / perPage) + 1
+ * Parses the `range` query parameter from ra-data-simple-rest / FakeRest.
+ * Expected format: JSON-encoded `[start, end]` array, e.g. `[0,24]`
  */
-export const parsePagination = (value: string): Pagination => {
+export const parseRange = (value: string): Range => {
   let parsed: unknown;
   try {
     parsed = JSON.parse(value);
@@ -24,25 +17,22 @@ export const parsePagination = (value: string): Pagination => {
   }
 
   if (!Array.isArray(parsed) || parsed.length !== 2) {
-    throw new Error(`Invalid range parameter: expected [rangeStart, rangeEnd] array`);
+    throw new Error(`Invalid range parameter: expected [start, end] array`);
   }
 
-  const [rangeStart, rangeEnd] = parsed;
+  const [start, end] = parsed;
 
-  if (typeof rangeStart !== 'number' || typeof rangeEnd !== 'number') {
-    throw new Error(`Invalid range parameter: rangeStart and rangeEnd must be numbers`);
+  if (typeof start !== 'number' || typeof end !== 'number') {
+    throw new Error(`Invalid range parameter: start and end must be numbers`);
   }
 
-  if (rangeStart < 0) {
-    throw new Error(`Invalid range parameter: rangeStart must be >= 0`);
+  if (start < 0) {
+    throw new Error(`Invalid range parameter: start must be >= 0`);
   }
 
-  if (rangeEnd < rangeStart) {
-    throw new Error(`Invalid range parameter: rangeEnd must be >= rangeStart`);
+  if (end < start) {
+    throw new Error(`Invalid range parameter: end must be >= start`);
   }
 
-  const perPage = rangeEnd - rangeStart + 1;
-  const page = Math.floor(rangeStart / perPage) + 1;
-
-  return { page, perPage };
+  return { start, end };
 };

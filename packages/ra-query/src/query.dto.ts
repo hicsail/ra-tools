@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Transform, type TransformFnParams } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { parseSort, type Sort } from './sort';
-import { parsePagination, type Pagination } from './pagination';
+import { parseRange, type Range } from './pagination';
 import { parseFilter, type Filter } from './filter';
 
 export class RAQuery {
@@ -11,8 +11,8 @@ export class RAQuery {
   sort?: Sort;
 
   @IsOptional()
-  @Transform(({ value }: TransformFnParams) => (value !== undefined ? parsePagination(value) : undefined))
-  range?: Pagination;
+  @Transform(({ value }: TransformFnParams) => (value !== undefined ? parseRange(value) : undefined))
+  range?: Range;
 
   @IsOptional()
   @Transform(({ value }: TransformFnParams) => (value !== undefined ? parseFilter(value) : undefined))

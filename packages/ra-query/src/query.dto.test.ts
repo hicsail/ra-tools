@@ -17,7 +17,7 @@ describe('RAQuery', () => {
       const query = plainToInstance(RAQuery, VALID_RAW);
 
       expect(query.sort).toEqual({ field: 'title', order: 'ASC' });
-      expect(query.range).toEqual({ page: 1, perPage: 25 });
+      expect(query.range).toEqual({ start: 0, end: 24 });
       expect(query.filter).toEqual([{ field: 'author_id', operator: FilterOperator.Eq, value: 12 }]);
     });
 
@@ -43,10 +43,10 @@ describe('RAQuery', () => {
       expect(query.sort).toEqual({ field: 'created_at', order: 'DESC' });
     });
 
-    it('parses the second page', () => {
+    it('parses the second page window', () => {
       const query = plainToInstance(RAQuery, { ...VALID_RAW, range: '[25,49]' });
 
-      expect(query.range).toEqual({ page: 2, perPage: 25 });
+      expect(query.range).toEqual({ start: 25, end: 49 });
     });
 
     it('parses a filter with an operator suffix', () => {

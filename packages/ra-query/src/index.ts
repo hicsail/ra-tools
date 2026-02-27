@@ -1,5 +1,5 @@
 export { parseSort, type Sort, type SortOrder } from './sort';
-export { parsePagination, type Pagination } from './pagination';
+export { parseRange, type Range } from './pagination';
 export {
   parseFilter,
   type Filter,
