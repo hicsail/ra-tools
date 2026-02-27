@@ -1,5 +1,5 @@
 {
-  "name": "@sail/ra-query",
+  "name": "@hicsail/ra-query",
   "version": "0.1.0",
   "description": "React Admin query utilities",
   "type": "module",
@@ -41,5 +41,10 @@
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.56.1",
     "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "reflect-metadata": "^0.2.2"
   }
 }

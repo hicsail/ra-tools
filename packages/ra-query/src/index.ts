@@ -4,8 +4,8 @@ export {
   parseFilter,
   type Filter,
   type FilterCondition,
-  type FilterOperator,
+  FilterOperator,
   type FilterValue,
   type ScalarFilterValue,
 } from './filter';
-export { parseQuery, type ParsedQuery } from './query';
+export { RAQuery } from './query.dto';
