@@ -1,17 +1,13 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "ES2022",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "target": "ES2020",
+    "moduleResolution": "bundler",
     "strict": true,
     "declaration": true,
-    "sourceMap": true,
+    "emitDeclarationOnly": false,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }
