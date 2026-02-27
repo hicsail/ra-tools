@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseFilterName, FilterOperations, parseFilterValue } from '../src/filter';
+import { parseFilterName, FilterOperations, parseFilterValue, parseFilter } from '../src/filter';
+import { TransformFnParams } from "../src/utility";
 
 describe('parseFilterName', () => {
   it('should parse plain names', () => {
@@ -54,5 +55,53 @@ describe('parseFilterItem', () => {
 
   it('should disallow passing in objects', () => {
     expect(() => parseFilterValue({ name: 'Bob' })).toThrow();
+  });
+});
+
+const makeParams = (input: string): TransformFnParams => {
+  return {
+    value: input,
+    key: 'unimportant',
+    obj: {}
+  };
+}
+
+describe('parseFilter', () => {
+  it('should handle plain single filter', () => {
+    expect(parseFilter(makeParams('{"author": "bob"}'))).toEqual([
+      { field: 'author', value: 'bob', operation: FilterOperations.Equal }
+    ])
+  });
+
+  it('should handle plain multi-filter', () => {
+    const filter = JSON.stringify({
+      author: 'Harper Lee Collins',
+      title: 'To Kill a Mocking Bird'
+    });
+
+    expect(parseFilter(makeParams(filter))).toEqual([
+      { field: 'author', value: 'Harper Lee Collins', operation: FilterOperations.Equal },
+      { field: 'title', value: 'To Kill a Mocking Bird', operation: FilterOperations.Equal }
+    ]);
+  });
+
+  it('should handle nested objects', () => {
+    const filter = JSON.stringify({
+      'author.name': 'Harper Lee Collins'
+    });
+
+    expect(parseFilter(makeParams(filter))).toEqual([
+      { field: 'author.name', value: 'Harper Lee Collins', operation: FilterOperations.Equal }
+    ]);
+  });
+
+  it('should handle nested objects with specified operation', () => {
+    const filter = JSON.stringify({
+      'author.name_neq': 'Harper Lee Collins'
+    });
+
+    expect(parseFilter(makeParams(filter))).toEqual([
+      { field: 'author.name', value: 'Harper Lee Collins', operation: FilterOperations.NotEqual }
+    ]);
   });
 });
