@@ -5,7 +5,9 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest"
+    "test": "vitest",
+    "prettier": "prettier -l \"src/**/*.ts\"",
+    "prettier:fix": "prettier -wl \"src/**/*.ts\""
   },
   "exports": {
     ".": {
@@ -30,6 +32,7 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"

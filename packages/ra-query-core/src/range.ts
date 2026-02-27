@@ -47,4 +47,3 @@ export const parseRange = (params: TransformFnParams): Range => {
 
   return { start: first, end: second };
 };
-

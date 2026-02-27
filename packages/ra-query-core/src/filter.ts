@@ -72,4 +72,3 @@ export const parseFilter = (params: TransformFnParams): FilterItem[] => {
 
   return result;
 };
-

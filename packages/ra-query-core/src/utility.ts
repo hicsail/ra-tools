@@ -3,9 +3,9 @@
  * for parsing
  */
 export interface TransformFnParams {
-    value: any;
-    key: string;
-    obj: any;
+  value: any;
+  key: string;
+  obj: any;
 }
 
 /**
