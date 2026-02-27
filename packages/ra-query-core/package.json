@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "build": "tsup",
+    "dev": "tsup --watch",
     "test": "vitest"
   },
   "exports": {
