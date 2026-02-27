@@ -8,9 +8,7 @@ describe('parseFilter', () => {
     });
 
     it('parses a numeric field', () => {
-      expect(parseFilter('{"author_id":12}')).toEqual([
-        { field: 'author_id', operator: FilterOperator.Eq, value: 12 },
-      ]);
+      expect(parseFilter('{"author_id":12}')).toEqual([{ field: 'author_id', operator: FilterOperator.Eq, value: 12 }]);
     });
 
     it('parses a string field', () => {
@@ -79,9 +77,7 @@ describe('parseFilter', () => {
     });
 
     it('parses a date range producing two conditions', () => {
-      expect(
-        parseFilter('{"published_at_gte":"2015-06-12","published_at_lte":"2015-06-15"}')
-      ).toEqual([
+      expect(parseFilter('{"published_at_gte":"2015-06-12","published_at_lte":"2015-06-15"}')).toEqual([
         { field: 'published_at', operator: FilterOperator.Gte, value: '2015-06-12' },
         { field: 'published_at', operator: FilterOperator.Lte, value: '2015-06-15' },
       ]);
@@ -133,9 +129,7 @@ describe('parseFilter', () => {
 
   describe('global full-text search (bare "q" key)', () => {
     it('parses q as field "q" with operator Q', () => {
-      expect(parseFilter('{"q":"react"}')).toEqual([
-        { field: 'q', operator: FilterOperator.Q, value: 'react' },
-      ]);
+      expect(parseFilter('{"q":"react"}')).toEqual([{ field: 'q', operator: FilterOperator.Q, value: 'react' }]);
     });
   });
 
@@ -155,11 +149,7 @@ describe('parseFilter', () => {
 
   describe('mixed conditions', () => {
     it('parses a mix of flat, dot-notation, and operator keys', () => {
-      expect(
-        parseFilter(
-          '{"is_active":true,"author.name":"Tolstoi","published_at_gte":"2020-01-01"}'
-        )
-      ).toEqual([
+      expect(parseFilter('{"is_active":true,"author.name":"Tolstoi","published_at_gte":"2020-01-01"}')).toEqual([
         { field: 'is_active', operator: FilterOperator.Eq, value: true },
         { field: 'author.name', operator: FilterOperator.Eq, value: 'Tolstoi' },
         { field: 'published_at', operator: FilterOperator.Gte, value: '2020-01-01' },
@@ -185,9 +175,7 @@ describe('parseFilter', () => {
     });
 
     it('throws when a field value is a nested object', () => {
-      expect(() => parseFilter('{"address":{"city":"NY"}}')).toThrow(
-        'expected a JSON object with scalar values'
-      );
+      expect(() => parseFilter('{"address":{"city":"NY"}}')).toThrow('expected a JSON object with scalar values');
     });
   });
 });

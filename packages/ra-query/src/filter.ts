@@ -7,16 +7,16 @@
  * The bare key "q" (no field prefix) signals a global full-text search.
  */
 export enum FilterOperator {
-  Eq = '_eq',         // field === value
-  Neq = '_neq',       // field !== value
-  EqAny = '_eq_any',  // field === any of value[]
-  NeqAny = '_neq_any',// field !== any of value[]
-  IncAny = '_inc_any',// array field includes any of value[]
-  Q = '_q',           // full-text search (field-level or global via bare "q" key)
-  Lt = '_lt',         // field < value
-  Lte = '_lte',       // field <= value
-  Gt = '_gt',         // field > value
-  Gte = '_gte',       // field >= value
+  Eq = '_eq', // field === value
+  Neq = '_neq', // field !== value
+  EqAny = '_eq_any', // field === any of value[]
+  NeqAny = '_neq_any', // field !== any of value[]
+  IncAny = '_inc_any', // array field includes any of value[]
+  Q = '_q', // full-text search (field-level or global via bare "q" key)
+  Lt = '_lt', // field < value
+  Lte = '_lte', // field <= value
+  Gt = '_gt', // field > value
+  Gte = '_gte', // field >= value
 }
 
 /** A scalar value that can appear in a filter comparison. */
@@ -71,10 +71,7 @@ const parseFilterKey = (key: string): { field: string; operator: FilterOperator 
 };
 
 const isScalarFilterValue = (value: unknown): value is ScalarFilterValue =>
-  value === null ||
-  typeof value === 'string' ||
-  typeof value === 'number' ||
-  typeof value === 'boolean';
+  value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
 
 const isFilterValue = (value: unknown): value is FilterValue => {
   if (isScalarFilterValue(value)) return true;

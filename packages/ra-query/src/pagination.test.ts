@@ -39,9 +39,7 @@ describe('parsePagination', () => {
   });
 
   it('throws when values are not numbers', () => {
-    expect(() => parsePagination('["0","24"]')).toThrow(
-      'rangeStart and rangeEnd must be numbers'
-    );
+    expect(() => parsePagination('["0","24"]')).toThrow('rangeStart and rangeEnd must be numbers');
   });
 
   it('throws when rangeStart is negative', () => {

@@ -28,9 +28,7 @@ export const parseSort = (value: string): Sort => {
   }
 
   if (order !== 'ASC' && order !== 'DESC') {
-    throw new Error(
-      `Invalid sort parameter: order must be "ASC" or "DESC", got "${order}"`
-    );
+    throw new Error(`Invalid sort parameter: order must be "ASC" or "DESC", got "${order}"`);
   }
 
   return { field, order };

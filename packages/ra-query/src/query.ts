@@ -21,9 +21,7 @@ export interface ParsedQuery {
  */
 export const parseQuery = (params: URLSearchParams | string): ParsedQuery => {
   const searchParams =
-    typeof params === 'string'
-      ? new URLSearchParams(params.startsWith('?') ? params.slice(1) : params)
-      : params;
+    typeof params === 'string' ? new URLSearchParams(params.startsWith('?') ? params.slice(1) : params) : params;
 
   const sortRaw = searchParams.get('sort');
   const rangeRaw = searchParams.get('range');

@@ -22,9 +22,7 @@ describe('parseSort', () => {
   });
 
   it('throws when order is lowercase', () => {
-    expect(() => parseSort('["title","asc"]')).toThrow(
-      'order must be "ASC" or "DESC"'
-    );
+    expect(() => parseSort('["title","asc"]')).toThrow('order must be "ASC" or "DESC"');
   });
 
   it('throws when value is not an array', () => {

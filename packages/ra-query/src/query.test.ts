@@ -46,43 +46,31 @@ describe('parseQuery', () => {
   describe('missing parameters', () => {
     it('throws when sort is missing', () => {
       const { sort: _, ...rest } = VALID_PARAMS;
-      expect(() => parseQuery(toSearchParams(rest))).toThrow(
-        'Missing required query parameter: sort'
-      );
+      expect(() => parseQuery(toSearchParams(rest))).toThrow('Missing required query parameter: sort');
     });
 
     it('throws when range is missing', () => {
       const { range: _, ...rest } = VALID_PARAMS;
-      expect(() => parseQuery(toSearchParams(rest))).toThrow(
-        'Missing required query parameter: range'
-      );
+      expect(() => parseQuery(toSearchParams(rest))).toThrow('Missing required query parameter: range');
     });
 
     it('throws when filter is missing', () => {
       const { filter: _, ...rest } = VALID_PARAMS;
-      expect(() => parseQuery(toSearchParams(rest))).toThrow(
-        'Missing required query parameter: filter'
-      );
+      expect(() => parseQuery(toSearchParams(rest))).toThrow('Missing required query parameter: filter');
     });
   });
 
   describe('forwards malformed parameter errors', () => {
     it('throws on bad sort value', () => {
-      expect(() =>
-        parseQuery(toSearchParams({ ...VALID_PARAMS, sort: 'bad' }))
-      ).toThrow('Invalid sort parameter');
+      expect(() => parseQuery(toSearchParams({ ...VALID_PARAMS, sort: 'bad' }))).toThrow('Invalid sort parameter');
     });
 
     it('throws on bad range value', () => {
-      expect(() =>
-        parseQuery(toSearchParams({ ...VALID_PARAMS, range: 'bad' }))
-      ).toThrow('Invalid range parameter');
+      expect(() => parseQuery(toSearchParams({ ...VALID_PARAMS, range: 'bad' }))).toThrow('Invalid range parameter');
     });
 
     it('throws on bad filter value', () => {
-      expect(() =>
-        parseQuery(toSearchParams({ ...VALID_PARAMS, filter: 'bad' }))
-      ).toThrow('Invalid filter parameter');
+      expect(() => parseQuery(toSearchParams({ ...VALID_PARAMS, filter: 'bad' }))).toThrow('Invalid filter parameter');
     });
   });
 });
