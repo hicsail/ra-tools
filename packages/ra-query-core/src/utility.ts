@@ -25,7 +25,7 @@ export const unpack = (value: unknown): unknown => {
     try {
       return JSON.parse(value);
     } catch (_e) {
-      // At this point its a string that isn't stringifies JSON
+      // At this point its a string that isn't stringified JSON
       return value;
     }
   }
