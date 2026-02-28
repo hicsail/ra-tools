@@ -3,7 +3,7 @@
  * for parsing
  */
 export interface TransformFnParams {
-  value: any;
+  value: unknown;
   key: string;
   obj: any;
 }
