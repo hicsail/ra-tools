@@ -2,26 +2,44 @@ import { unpack, eachElementIsType } from './utility';
 import { TransformFnParams } from './utility';
 
 /** Supported operations from FakeRest Standard */
-const supportedOperations = [
-  'neq_any', 'eq_any', 'inc_any', 'neq', 'lte', 'gte', 'lt', 'gt', 'eq', 'q'
-] as const;
+const supportedOperations = ['neq_any', 'eq_any', 'inc_any', 'neq', 'lte', 'gte', 'lt', 'gt', 'eq', 'q'] as const;
 
 /** Typescript definition for the supported operations */
-export type FilterOperations = typeof supportedOperations[number];
+export type FilterOperations = (typeof supportedOperations)[number];
 
 /** Helper for more cleaner selection of operations */
 export const FilterOperations = {
-  get Equal(): FilterOperations { return 'eq' },
-  get NotEqual(): FilterOperations { return 'neq' },
-  get EqualAny(): FilterOperations { return 'neq_any' },
-  get NotEqualAny(): FilterOperations { return 'neq_any' },
-  get IncludeAny(): FilterOperations { return 'inc_any' },
-  get Query(): FilterOperations { return 'q' },
-  get LessThan(): FilterOperations { return 'lt' },
-  get LessThanEqual(): FilterOperations { return 'lte' },
-  get GreaterThan(): FilterOperations { return 'gt' },
-  get GreaterThanEqual(): FilterOperations { return 'gte' }
-}
+  get Equal(): FilterOperations {
+    return 'eq';
+  },
+  get NotEqual(): FilterOperations {
+    return 'neq';
+  },
+  get EqualAny(): FilterOperations {
+    return 'neq_any';
+  },
+  get NotEqualAny(): FilterOperations {
+    return 'neq_any';
+  },
+  get IncludeAny(): FilterOperations {
+    return 'inc_any';
+  },
+  get Query(): FilterOperations {
+    return 'q';
+  },
+  get LessThan(): FilterOperations {
+    return 'lt';
+  },
+  get LessThanEqual(): FilterOperations {
+    return 'lte';
+  },
+  get GreaterThan(): FilterOperations {
+    return 'gt';
+  },
+  get GreaterThanEqual(): FilterOperations {
+    return 'gte';
+  }
+};
 
 export type FilterValueType = string | number | string[] | number[];
 
@@ -44,13 +62,13 @@ export type FilterItem = {
  * For example
  * "author.lastname_neq" => { field: "author.lastname", operation: FilterOperations.NotEqual }
  */
-export const parseFilterName = (fieldRaw: string): { field: string, operation: FilterOperations } => {
+export const parseFilterName = (fieldRaw: string): { field: string; operation: FilterOperations } => {
   // See if any of the operators show up at the end, the operators are ordered to
   // avoid partial matches
   for (const operation of supportedOperations) {
     if (fieldRaw.endsWith(operation)) {
       // Matching operation found, pull off the postfix
-      const lengthOfPostfix = operation.length + 1  // +1 for the underscore
+      const lengthOfPostfix = operation.length + 1; // +1 for the underscore
       const fieldName = fieldRaw.slice(0, -lengthOfPostfix);
 
       return { field: fieldName, operation };
@@ -59,7 +77,7 @@ export const parseFilterName = (fieldRaw: string): { field: string, operation: F
 
   // No matching operation found, return the field and the default equals
   return { field: fieldRaw, operation: FilterOperations.Equal };
-}
+};
 
 export const parseFilterValue = (value: unknown): FilterValueType => {
   // Value itself cannot be an object
@@ -82,6 +100,9 @@ export const parseFilterValue = (value: unknown): FilterValueType => {
     throw new Error("A value that isn't an array needs to be a string or number");
   }
 
+  // Need to play with type definitions. I believe at this point the
+  // type should be certain.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return value as any;
 };
 
