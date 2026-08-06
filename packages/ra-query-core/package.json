@@ -1,7 +1,7 @@
 {
-  "name": "@hicsail/ra-query-core",
+  "name": "@bu-sail/ra-query-core",
   "version": "0.1.0",
-  "description": "",
+  "description": "Helper functions for parsing React Admin Simple Rest requests",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
