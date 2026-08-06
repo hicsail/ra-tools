@@ -6,6 +6,7 @@ export { Embed, parseEmbed } from './embed';
 export { FilterOperations, FilterItem, parseFilter } from './filter';
 export { PaginationResponse, makeContentRange } from './pagination';
 export { Range, parseRange } from './range';
+export { Sort, parseSort } from './sort';
 
 export interface RAQuery {
   embed: Embed;
